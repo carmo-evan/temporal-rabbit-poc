@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/carmo-evan/temporal-poc/domain"
+	"github.com/carmo-evan/temporal-poc/workflow"
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 )
@@ -22,7 +22,7 @@ func main() {
 	// This worker hosts both Worker and Activity functions
 	w := worker.New(c, ConvertImageTaskQueue, worker.Options{})
 
-	w.RegisterWorkflow(domain.ConvertImageWorkflow)
+	w.RegisterWorkflow(workflow.ConvertImageWorkflow)
 
 	// Start listening to the Task Queue
 	err = w.Run(worker.InterruptCh())

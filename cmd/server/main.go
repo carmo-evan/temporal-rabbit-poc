@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/carmo-evan/temporal-poc/domain"
+	"github.com/carmo-evan/temporal-poc/workflow"
 	"github.com/streadway/amqp"
 	"go.temporal.io/sdk/client"
 )
@@ -33,7 +33,7 @@ func Handler(c client.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var p Payload
 		json.NewDecoder(r.Body).Decode(&p)
-		we, err := c.ExecuteWorkflow(context.Background(), domain.ConvertImageWorkflowOptions, domain.ConvertImageWorkflow, p.Picture)
+		we, err := c.ExecuteWorkflow(context.Background(), workflow.ConvertImageWorkflowOptions, workflow.ConvertImageWorkflow, p.Picture)
 		if err != nil {
 			log.Fatalln("unable to execute Workflow", err)
 		}
@@ -78,7 +78,7 @@ func listenForRabbitMessage(ctx context.Context, c client.Client) {
 	}
 
 	for range msgs {
-		log.Println("Got rabbit message. Pushing it to workflow.", domain.ConvertImageWorkflowOptions.ID)
-		c.SignalWorkflow(ctx, domain.ConvertImageWorkflowOptions.ID, "", "message", "works!")
+		log.Println("Got rabbit message. Pushing it to workflow.", workflow.ConvertImageWorkflowOptions.ID)
+		c.SignalWorkflow(ctx, workflow.ConvertImageWorkflowOptions.ID, "", "message", "works!")
 	}
 }
