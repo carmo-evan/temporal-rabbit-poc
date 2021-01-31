@@ -1,4 +1,4 @@
-#temporal-rabbit-poc
+# temporal-rabbit-poc
 
 This is an example of how temporal can be used in tandem with a message queue such as Rabbit MQ.
 
